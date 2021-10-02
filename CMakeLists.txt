@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 project(Qt-duping-shapes VERSION 0.1 LANGUAGES CXX)
 
@@ -11,16 +11,14 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
 
 set(TS_FILES Qt-duping-shapes_ru_RU.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        qml.qrc
         ${TS_FILES}
 )
 
@@ -44,14 +42,17 @@ else()
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(Qt-duping-shapes
-            ${PROJECT_SOURCES}
+          ${PROJECT_SOURCES}
         )
     endif()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(Qt-duping-shapes PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_compile_definitions(Qt-duping-shapes
+  PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+target_link_libraries(Qt-duping-shapes
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
 
 set_target_properties(Qt-duping-shapes PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -60,5 +61,6 @@ set_target_properties(Qt-duping-shapes PROPERTIES
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
+    qt_import_qml_plugins(Qt-duping-shapes)
     qt_finalize_executable(Qt-duping-shapes)
 endif()
