@@ -1,5 +1,8 @@
 <RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
+    <qresource prefix="/forms">
+        <file alias="main.qml">forms/main.qml</file>
+    </qresource>
+    <qresource prefix="/components">
+        <file>DupingShapeDelegate.qml</file>
     </qresource>
 </RCC>
