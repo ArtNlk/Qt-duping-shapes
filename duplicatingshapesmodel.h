@@ -9,6 +9,11 @@ class DuplicatingShapesModel : public QAbstractListModel
     Q_OBJECT
 
 public:
+    enum Roles {
+            VertexCountRole = Qt::UserRole + 1,
+            LifetimeRole
+        };
+
     explicit DuplicatingShapesModel(QObject *parent = nullptr);
 
     // Header:
@@ -19,10 +24,15 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-public slots:
-    void deleteAt(const QModelIndex index);
+    virtual QHash<int, QByteArray> roleNames() const override;
 
-    void spawnShapes();
+public slots:
+
+    void addShape(unsigned int vertexCount, unsigned int lifespan);
+
+    void deleteAt(QModelIndex index);
+
+    Q_INVOKABLE void tick();
 
 private:
     QVector<DuplicatingShape*> shapes;

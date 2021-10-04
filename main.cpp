@@ -4,6 +4,9 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include "duplicatingshapesmodel.h"
+#include "duplicatingshape.h"
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -29,6 +32,9 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+    qmlRegisterType<DuplicatingShapesModel>("DupingShapes",1,0,"DupingShapesModel");
+    qmlRegisterType<DuplicatingShape>("DupingShapes",1,0,"DupingShape");
+    DuplicatingShape::setMaxVerts(1000);
     engine.load(url);
 
     return app.exec();

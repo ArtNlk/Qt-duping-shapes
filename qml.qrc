@@ -3,6 +3,6 @@
         <file alias="main.qml">forms/main.qml</file>
     </qresource>
     <qresource prefix="/components">
-        <file>DupingShapeDelegate.qml</file>
+        <file alias="DupingShapeDelegate.qml">components/DupingShapeDelegate.qml</file>
     </qresource>
 </RCC>
