@@ -30,10 +30,11 @@ public slots:
 
     void addShape(unsigned int vertexCount, unsigned int lifespan);
 
-    void deleteAt(QModelIndex index);
+    void deleteAt(int index);
 
-    Q_INVOKABLE void tick();
+    void tick();
 
+    Q_INVOKABLE void clicked(int index);
 private:
     QVector<DuplicatingShape*> shapes;
 };

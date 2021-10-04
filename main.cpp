@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     qmlRegisterType<DuplicatingShapesModel>("DupingShapes",1,0,"DupingShapesModel");
     qmlRegisterType<DuplicatingShape>("DupingShapes",1,0,"DupingShape");
-    DuplicatingShape::setMaxVerts(1000);
+    DuplicatingShape::setMaxVerts(10);
     engine.load(url);
 
     return app.exec();

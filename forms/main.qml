@@ -5,10 +5,11 @@ import DupingShapes 1.0
 import "../components"
 
 Window {
+    id: mainWindow
     width: 640
     height: 480
     visible: true
-    title: qsTr("Hello Worldss")
+    title: qsTr("Duplicating shapes")
 
     DupingShapesModel{
         id: dataModel
@@ -22,6 +23,8 @@ Window {
 
     Repeater{
         model: dataModel
-        delegate: DupingShapeDelegate{}
+        delegate: DupingShapeDelegate{
+        onClick:(index) => dataModel.clicked(index)
+        }
     }
 }

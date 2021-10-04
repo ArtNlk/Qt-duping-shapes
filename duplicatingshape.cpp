@@ -6,7 +6,7 @@ unsigned int DuplicatingShape::minVerts = 3;
 unsigned int DuplicatingShape::maxVerts = 3;
 unsigned int DuplicatingShape::usDefaultLifetime = 1000;
 
-DuplicatingShape::DuplicatingShape(QObject *parent, QModelIndex _index, unsigned int _usLifetime, unsigned int _vertexCount) :
+DuplicatingShape::DuplicatingShape(QObject *parent, QModelIndex _index, unsigned int _vertexCount, unsigned int _usLifetime) :
     QObject(parent),
     index(_index)
 {

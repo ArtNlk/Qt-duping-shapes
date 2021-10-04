@@ -1,5 +1,7 @@
 #include "duplicatingshapesmodel.h"
 
+#include <QRandomGenerator>
+
 DuplicatingShapesModel::DuplicatingShapesModel(QObject *parent)
     : QAbstractListModel(parent)
 {
@@ -58,14 +60,16 @@ void DuplicatingShapesModel::addShape(unsigned int vertexCount, unsigned int lif
     endInsertRows();
 }
 
-void DuplicatingShapesModel::deleteAt(QModelIndex index)
+void DuplicatingShapesModel::deleteAt(int index)
 {
-    if(index.row() >= shapes.size())
+    if(index >= shapes.size())
     {
-        qDebug() << "DuplicatingShapesModel attempt to delete shape at invalid index: " << index.row();
+        qDebug() << "DuplicatingShapesModel attempt to delete shape at invalid index: " << index;
         throw std::invalid_argument("DuplicatingShapesModel attempt to delete shape at invalid index");
     }
-    shapes.takeAt(index.row())->deleteLater();
+    beginRemoveRows(QModelIndex(),index,index);
+    shapes.takeAt(index)->deleteLater();
+    endRemoveRows();
 }
 
 void DuplicatingShapesModel::tick()
@@ -77,4 +81,18 @@ void DuplicatingShapesModel::tick()
     }
     qDebug() << "Changed from: " << index(0) << " to " <<index(shapes.size()-1);
     emit dataChanged(index(0),index(shapes.size()-1));
+}
+
+void DuplicatingShapesModel::clicked(int index)
+{
+    qDebug() << "DuplicatingShapesModel: clicked at index: " << index;
+
+    int numSides = shapes.at(index)->getVertexCount();
+    int minSides = DuplicatingShape::getMinVerts();
+    int maxSides = DuplicatingShape::getMaxVerts();
+    for(int i = 0; i < numSides; i++)
+    {
+        addShape(QRandomGenerator::global()->bounded(minSides,maxSides),1000);
+    }
+    deleteAt(index);
 }
