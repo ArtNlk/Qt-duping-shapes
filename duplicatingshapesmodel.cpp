@@ -1,16 +1,16 @@
 #include "duplicatingshapesmodel.h"
 
 #include <QRandomGenerator>
-#include <QMessageBox>
 
 DuplicatingShapesModel::DuplicatingShapesModel(QObject *parent)
-    : QAbstractListModel(parent)
+    : QAbstractListModel(parent),
+      initialSpawnCount(3)
 {
 }
 
 QVariant DuplicatingShapesModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    return QVariant(tr("Duplicating Shapes"));
+    return QVariant(tr("Множащиеся числа"));
 }
 
 int DuplicatingShapesModel::rowCount(const QModelIndex &parent) const
@@ -78,17 +78,45 @@ void DuplicatingShapesModel::deleteAt(int index)
     endRemoveRows();
 }
 
+void DuplicatingShapesModel::reset()
+{
+    while(!shapes.empty())
+    {
+        deleteAt(0);
+    }
+
+    spawn(initialSpawnCount);
+}
+
 void DuplicatingShapesModel::spawn(int n)
 {
     int minSides = DuplicatingShape::getMinVerts();
     int maxSides = DuplicatingShape::getMaxVerts();
-    for(int i = 0; i < n; i++)
+    if(minSides == maxSides)//Fix bounded random assert failure if min==max
     {
-        addShape(QRandomGenerator::global()->bounded(minSides,maxSides),DuplicatingShape::getDefaultLifetime());
+        for(int i = 0; i < n; i++)
+        {
+            addShape(minSides,DuplicatingShape::getDefaultLifetime());
+        }
+    }
+    else
+    {
+        for(int i = 0; i < n; i++)
+        {
+            addShape(QRandomGenerator::global()->bounded(minSides,maxSides),DuplicatingShape::getDefaultLifetime());
+        }
     }
 }
 
 int DuplicatingShapesModel::getDefaultShapeLifetime()
 {
     return DuplicatingShape::getDefaultLifetime();
+}
+
+void DuplicatingShapesModel::changeSettings(int initialCount, int sidesMin, int sidesMax, int lifespan)
+{
+    initialSpawnCount = initialCount;
+    DuplicatingShape::setMinVerts(sidesMin);
+    DuplicatingShape::setMaxVerts(sidesMax);
+    DuplicatingShape::setDefaultLifetime(lifespan);
 }

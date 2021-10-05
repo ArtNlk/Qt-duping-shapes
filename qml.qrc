@@ -1,9 +1,10 @@
 <RCC>
-    <qresource prefix="/forms">
-        <file alias="main.qml">forms/main.qml</file>
-        <file alias="SettingsDialog.qml">forms/SettingsDialog.qml</file>
-    </qresource>
     <qresource prefix="/components">
-        <file alias="DupingShapeDelegate.qml">components/DupingShapeDelegate.qml</file>
+    <file alias="DupingShapeDelegate.qml">components/DupingShapeDelegate.qml</file>
+    <file alias="TextSpinbox.qml">components/TextSpinbox.qml</file>
+    </qresource>
+    <qresource prefix="/forms">
+    <file alias="main.qml">forms/main.qml</file>
+    <file alias="SettingsDialog.qml">forms/SettingsDialog.qml</file>
     </qresource>
 </RCC>

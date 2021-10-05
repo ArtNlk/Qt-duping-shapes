@@ -33,11 +33,17 @@ public slots:
 
     Q_INVOKABLE void deleteAt(int index);
 
+    Q_INVOKABLE void reset();
+
     Q_INVOKABLE void spawn(int n);
 
     Q_INVOKABLE int getDefaultShapeLifetime();
+
+    Q_INVOKABLE void changeSettings(int initialCount, int sidesMin, int sidesMax, int lifespan);
 private:
     QVector<DuplicatingShape*> shapes;
+
+    int initialSpawnCount;
 };
 
 #endif // DUPLICATINGSHAPESMODEL_H

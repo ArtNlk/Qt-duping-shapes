@@ -1,6 +1,7 @@
 import QtQml 2.3
 import QtQuick 2.0
 import QtQuick.Shapes 1.12
+import QtQml.Models 2.15
 import DupingShapes 1.0
 
 Shape {
@@ -37,13 +38,21 @@ Shape {
             NumberAnimation {properties: "opacity"; easing.type: Easing.InOutCubic; duration: 1000}
             onRunningChanged: {
                         if ((state == "DEAD") && (!running))
-                            shape.death(index);
+                        {
+                            shape.death(index)
+                        }
                     }
         },
         Transition {
             from: "DEAD"
             to: "ALIVE"
             NumberAnimation {properties: "opacity"; easing.type: Easing.InOutCubic; duration: 250}
+            onRunningChanged: {
+                        if ((state == "ALIVE") && (!running))
+                        {
+                            timer.start()
+                        }
+                    }
         },
         Transition {
             from: "ALIVE"
@@ -51,15 +60,20 @@ Shape {
             NumberAnimation {properties: "opacity"; easing.type: Easing.InOutCubic; duration: 250}
             onRunningChanged: {
                         if ((state == "CLICKED") && (running))
-                            shape.click(model.vertexCount);
+                        {
+                            shape.click(model.vertexCount)
+                        }
                     }
         }
         ]
 
     Timer {
-            interval: model.lifetime; running: true; repeat: false
-            onTriggered: parent.state = "DEAD"
-        }
+        id: timer
+        interval: model.lifetime;
+        running: false;
+        repeat: false
+        onTriggered: parent.state = "DEAD"
+    }
 
     ListModel {
             id: positions
@@ -92,7 +106,7 @@ Shape {
                   }
     }
 
-    Instantiator {
+    Instantiator{
             model: positions
             onObjectAdded:(index, object) => {
                 shapePath.pathElements.push(object)
