@@ -6,27 +6,19 @@ unsigned int DuplicatingShape::minVerts = 3;
 unsigned int DuplicatingShape::maxVerts = 3;
 unsigned int DuplicatingShape::usDefaultLifetime = 1000;
 
-DuplicatingShape::DuplicatingShape(QObject *parent, QModelIndex _index, unsigned int _vertexCount, unsigned int _usLifetime) :
-    QObject(parent),
-    index(_index)
+DuplicatingShape::DuplicatingShape(QObject *parent, unsigned int _vertexCount, unsigned int _usLifetime) :
+    QObject(parent)
 {
     if(_usLifetime == 0 || _vertexCount == 0 || _vertexCount < minVerts || _vertexCount > maxVerts)
     {
         qDebug() << "Invalid DuplicatingShape creation: lifetime: "
                  << _usLifetime
                  << " vertex count: "
-                 << _vertexCount
-                 << "item index: "
-                 << _index.row();
+                 << _vertexCount;
         throw std::invalid_argument("Invalid DuplicatingShape creation");
     }
     usRemaining = _usLifetime;
     vertexCount = _vertexCount;
-}
-
-QModelIndex DuplicatingShape::getIndex()
-{
-    return index;
 }
 
 unsigned int DuplicatingShape::getVertexCount()
@@ -37,15 +29,6 @@ unsigned int DuplicatingShape::getVertexCount()
 unsigned int DuplicatingShape::getUsRemaining()
 {
     return usRemaining;
-}
-
-void DuplicatingShape::tick()
-{
-    if(usRemaining == 0)
-    {
-        emit onDeath(index);
-    }
-    usRemaining--;
 }
 
 unsigned int DuplicatingShape::getDefaultLifetime()

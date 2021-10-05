@@ -11,8 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Widgets Quick LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Widgets LinguistTools REQUIRED)
 
 set(TS_FILES Qt-duping-shapes_ru_RU.ts)
 
@@ -51,7 +51,7 @@ add_executable(Qt-duping-shapes WIN32
 add_dependencies(Qt-duping-shapes translations)
 
 target_link_libraries(Qt-duping-shapes
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(Qt-duping-shapes PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

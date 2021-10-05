@@ -1,6 +1,7 @@
 #include "duplicatingshapesmodel.h"
 
 #include <QRandomGenerator>
+#include <QMessageBox>
 
 DuplicatingShapesModel::DuplicatingShapesModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -37,6 +38,10 @@ QVariant DuplicatingShapesModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(shapes.at(index.row())->getUsRemaining());
         break;
 
+    case (DefaultLifetimeRole):
+        return QVariant::fromValue(DuplicatingShape::getDefaultLifetime());
+        break;
+
     default:
         qDebug() << "DuplicatingShapesModel Attempt to get unknown role: " << role;
         throw std::invalid_argument("DuplicatingShapesModel Attempt to get unknown role");
@@ -48,13 +53,14 @@ QHash<int, QByteArray> DuplicatingShapesModel::roleNames() const
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
         roles[VertexCountRole] = "vertexCount";
         roles[LifetimeRole] = "lifetime";
+        roles[DefaultLifetimeRole] = "defaultLifetime";
 
         return roles;
 }
 
 void DuplicatingShapesModel::addShape(unsigned int vertexCount, unsigned int lifetime)
 {
-    DuplicatingShape* newShape = new DuplicatingShape(nullptr,index(shapes.size(),0),vertexCount,lifetime);
+    DuplicatingShape* newShape = new DuplicatingShape(nullptr,vertexCount,lifetime);
     beginInsertRows(QModelIndex(),shapes.size(),shapes.size());
     shapes.append(newShape);
     endInsertRows();
@@ -72,27 +78,17 @@ void DuplicatingShapesModel::deleteAt(int index)
     endRemoveRows();
 }
 
-void DuplicatingShapesModel::tick()
+void DuplicatingShapesModel::spawn(int n)
 {
-    qDebug() << "DuplicatingShapesModel: tick!";
-    for(DuplicatingShape* shape : shapes)
-    {
-        shape->tick();
-    }
-    qDebug() << "Changed from: " << index(0) << " to " <<index(shapes.size()-1);
-    emit dataChanged(index(0),index(shapes.size()-1));
-}
-
-void DuplicatingShapesModel::clicked(int index)
-{
-    qDebug() << "DuplicatingShapesModel: clicked at index: " << index;
-
-    int numSides = shapes.at(index)->getVertexCount();
     int minSides = DuplicatingShape::getMinVerts();
     int maxSides = DuplicatingShape::getMaxVerts();
-    for(int i = 0; i < numSides; i++)
+    for(int i = 0; i < n; i++)
     {
-        addShape(QRandomGenerator::global()->bounded(minSides,maxSides),1000);
+        addShape(QRandomGenerator::global()->bounded(minSides,maxSides),DuplicatingShape::getDefaultLifetime());
     }
-    deleteAt(index);
+}
+
+int DuplicatingShapesModel::getDefaultShapeLifetime()
+{
+    return DuplicatingShape::getDefaultLifetime();
 }

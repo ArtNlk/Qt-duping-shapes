@@ -15,16 +15,15 @@ Window {
         id: dataModel
         Component.onCompleted:
         {
-            dataModel.addShape(3,300)
-            dataModel.addShape(5,500)
-            dataModel.addShape(7,700)
+            dataModel.addShape(6,dataModel.getDefaultShapeLifetime())
         }
     }
 
     Repeater{
         model: dataModel
         delegate: DupingShapeDelegate{
-        onClick:(index) => dataModel.clicked(index)
+        onClick:(numSides) => dataModel.spawn(numSides)
+        onDeath:(index) => dataModel.deleteAt(index)
         }
     }
 }

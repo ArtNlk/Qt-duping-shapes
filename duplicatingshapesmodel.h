@@ -11,7 +11,8 @@ class DuplicatingShapesModel : public QAbstractListModel
 public:
     enum Roles {
             VertexCountRole = Qt::UserRole + 1,
-            LifetimeRole
+            LifetimeRole,
+            DefaultLifetimeRole
         };
 
     explicit DuplicatingShapesModel(QObject *parent = nullptr);
@@ -30,11 +31,11 @@ public slots:
 
     void addShape(unsigned int vertexCount, unsigned int lifespan);
 
-    void deleteAt(int index);
+    Q_INVOKABLE void deleteAt(int index);
 
-    void tick();
+    Q_INVOKABLE void spawn(int n);
 
-    Q_INVOKABLE void clicked(int index);
+    Q_INVOKABLE int getDefaultShapeLifetime();
 private:
     QVector<DuplicatingShape*> shapes;
 };
