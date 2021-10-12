@@ -9,17 +9,6 @@
 class DuplicatingShape : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
-
-    Q_PROPERTY(unsigned int vertexCount READ getVertexCount CONSTANT)
-
-    Q_PROPERTY(unsigned int usRemaining READ getUsRemaining() CONSTANT)
-
-    Q_PROPERTY(unsigned int minVerts READ getMinVerts WRITE setMinVerts)
-
-    Q_PROPERTY(unsigned int maxVerts READ getMaxVerts WRITE setMaxVerts)
-
-    Q_PROPERTY(unsigned int usDefaultLifetime READ getDefaultLifetime WRITE setDefaultLifetime)
 
 public:
     explicit DuplicatingShape(QObject *parent = nullptr,
@@ -32,7 +21,7 @@ public:
 
     static unsigned int getMinVerts();
     static unsigned int getMaxVerts();
-    Q_INVOKABLE static unsigned int getDefaultLifetime();
+    static unsigned int getDefaultLifetime();
 
     static void setMinVerts(unsigned int value);
     static void setMaxVerts(unsigned int value);

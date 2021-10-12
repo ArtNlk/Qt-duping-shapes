@@ -8,6 +8,14 @@ DuplicatingShapesModel::DuplicatingShapesModel(QObject *parent)
 {
 }
 
+DuplicatingShapesModel::~DuplicatingShapesModel()
+{
+    while(!shapes.isEmpty())
+    {
+        deleteAt(0);
+    }
+}
+
 QVariant DuplicatingShapesModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     return QVariant(tr("Множащиеся числа"));

@@ -6,13 +6,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC OFF)
+set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Qml Gui Quick LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Qml Gui Quick LinguistTools REQUIRED)
 find_package(Qt5QuickCompiler)
 
 option(UPDATE_TRANSLATIONS "Update source translation (files translations/*.ts)." ON)
@@ -52,7 +52,7 @@ set_property(DIRECTORY PROPERTY CLEAN_NO_CUSTOM TRUE)
 qtquick_compiler_add_resources(RESOURCES ${PROJECT_RESOURCES})
 message(STATUS "Qt RESOURCES" ${RESOURCES})
 
-add_executable(Qt-duping-shapes WIN32
+add_executable(Qt-duping-shapes
     ${PROJECT_SOURCES}
     ${RESOURCES}
     #${PROJECT_RESOURCES}
@@ -61,7 +61,7 @@ add_executable(Qt-duping-shapes WIN32
 add_dependencies(Qt-duping-shapes translations)
 
 target_link_libraries(Qt-duping-shapes
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Qml)
 
 set_target_properties(Qt-duping-shapes PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -80,6 +80,7 @@ get_property(LIB_QTCORE_PATH TARGET Qt${QT_VERSION_MAJOR}::Core PROPERTY IMPORTE
 get_property(LIB_QTQUICK_PATH TARGET Qt${QT_VERSION_MAJOR}::Quick PROPERTY IMPORTED_LOCATION_RELEASE)
 get_property(LIB_QTQML_PATH TARGET Qt${QT_VERSION_MAJOR}::Qml PROPERTY IMPORTED_LOCATION_RELEASE)
 get_property(LIB_QTNETWORK_PATH TARGET Qt${QT_VERSION_MAJOR}::Network PROPERTY IMPORTED_LOCATION_RELEASE)
+get_property(LIB_QTGUI_PATH TARGET Qt${QT_VERSION_MAJOR}::Gui PROPERTY IMPORTED_LOCATION_RELEASE)
 
 get_filename_component(QT_LIBRARY_DIR "${LIB_QTCORE_PATH}" DIRECTORY)
 get_filename_component(QT_PATH "${LIB_QTCORE_PATH}" PATH)
@@ -93,10 +94,13 @@ install(FILES ${QM_FILES} DESTINATION translations)
 
 set(EXE_PATH bin/Qt-duping-shapes${CMAKE_EXECUTABLE_SUFFIX})
 
+message(STATUS "Path: " ${LIB_QTNETWORK_PATH})
+
 install(FILES "${LIB_QTCORE_PATH}" DESTINATION bin)
 install(FILES "${LIB_QTQUICK_PATH}" DESTINATION bin)
 install(FILES "${LIB_QTQML_PATH}" DESTINATION bin)
 install(FILES "${LIB_QTNETWORK_PATH}" DESTINATION bin)
+install(FILES "${LIB_QTGUI_PATH}" DESTINATION bin)
 
 message(STATUS "Installing to " ${CMAKE_INSTALL_PREFIX} " / " ${EXE_PATH})
 
