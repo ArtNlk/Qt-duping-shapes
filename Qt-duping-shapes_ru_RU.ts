@@ -4,7 +4,7 @@
 <context>
     <name>DuplicatingShapesModel</name>
     <message>
-        <location filename="duplicatingshapesmodel.cpp" line="13"/>
+        <location filename="duplicatingshapesmodel.cpp" line="22"/>
         <source>Множащиеся числа</source>
         <translation type="unfinished"></translation>
     </message>

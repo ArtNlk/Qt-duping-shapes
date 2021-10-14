@@ -1,6 +1,7 @@
 #include "duplicatingshapesmodel.h"
 
 #include <QRandomGenerator>
+#include <QDebug>
 
 DuplicatingShapesModel::DuplicatingShapesModel(QObject *parent)
     : QAbstractListModel(parent),
@@ -60,7 +61,6 @@ QHash<int, QByteArray> DuplicatingShapesModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
         roles[VertexCountRole] = "vertexCount";
-        roles[LifetimeRole] = "lifetime";
         roles[DefaultLifetimeRole] = "defaultLifetime";
 
         return roles;

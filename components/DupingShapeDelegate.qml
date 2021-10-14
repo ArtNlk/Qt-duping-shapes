@@ -69,7 +69,7 @@ Shape {
 
     Timer {
         id: timer
-        interval: model.lifetime;
+        interval: model.defaultLifetime;
         running: false;
         repeat: false
         onTriggered: parent.state = "DEAD"

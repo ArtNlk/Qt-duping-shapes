@@ -54,8 +54,8 @@ message(STATUS "Qt RESOURCES" ${RESOURCES})
 
 add_executable(Qt-duping-shapes
     ${PROJECT_SOURCES}
-    ${RESOURCES}
-    #${PROJECT_RESOURCES}
+    #${RESOURCES}
+    ${PROJECT_RESOURCES}
     ${PROJECT_HEADERS})
 
 add_dependencies(Qt-duping-shapes translations)

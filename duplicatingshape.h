@@ -2,9 +2,6 @@
 #define DUPLICATINGSHAPE_H
 
 #include <QObject>
-#include <QPoint>
-#include <QAbstractItemModel>
-#include <qqml.h>
 
 class DuplicatingShape : public QObject
 {
